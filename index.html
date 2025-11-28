@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login & Sign Up</title>
+  <style>
+    * { margin: 0; padding: 0; font-family: Arial, sans-serif; box-sizing: border-box; }
+
+    body {
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      width: 900px;
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .left-panel {
+      width: 40%;
+      background: linear-gradient(135deg, #1cc51c, #159d15);
+      color: #fff;
+      padding: 60px 40px;
+    }
+
+    .left-panel h2 { font-size: 32px; margin-bottom: 15px; }
+
+    .left-panel p { font-size: 15px; margin-bottom: 30px; }
+
+    .left-panel button {
+      background: transparent;
+      border: 2px solid #fff;
+      padding: 12px 25px;
+      border-radius: 25px;
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+      transition: .3s;
+    }
+
+    .left-panel button:hover { background: rgb(255, 255, 255); color: black;}
+
+    .right-panel { width: 60%; padding: 60px; }
+
+    .right-panel h2 { color: #159d15; margin-bottom: 20px; }
+
+    .input-box { margin-bottom: 15px; }
+
+    .input-box input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #eee4e4;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .right-panel button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background: #46cc24;
+      color: #fff;
+      font-size: 17px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .right-panel button:hover { background: #067221; }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="left-panel" id="leftText">
+    <h2>Welcome Back!</h2>
+    <p>To keep connected with us please login with your personal info.</p>
+    <button onclick="showLogin()">SIGN IN</button>
+  </div>
+
+  <div class="right-panel">
+
+    <!-- SIGNUP FORM -->
+    <div id="signupForm">
+      <h2>Create Account</h2>
+      <div class="input-box"><input type="text" id="name" placeholder="Name"></div>
+      <div class="input-box"><input type="email" id="email" placeholder="Email"></div>
+      <div class="input-box"><input type="password" id="password" placeholder="Password"></div>
+      <button onclick="registerUser()">SIGN UP</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm" class="hidden">
+      <h2>Login</h2>
+      <div class="input-box"><input type="email" id="loginEmail" placeholder="Email"></div>
+      <div class="input-box"><input type="password" id="loginPassword" placeholder="Password"></div>
+      <button onclick="loginUser()">SIGN IN</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function showLogin() {
+    document.getElementById("signupForm").classList.add("hidden");
+    document.getElementById("loginForm").classList.remove("hidden");
+    document.getElementById("leftText").innerHTML = `
+      <h2>Hello, Friend!</h2>
+      <p>Enter your details and start your journey with us.</p>
+      <button onclick="showSignup()">SIGN UP</button>
+    `;
+  }
+
+  function showSignup() {
+    document.getElementById("signupForm").classList.remove("hidden");
+    document.getElementById("loginForm").classList.add("hidden");
+    document.getElementById("leftText").innerHTML = `
+      <h2>Welcome Back!</h2>
+      <p>To keep connected with us please login with your personal info.</p>
+      <button onclick="showLogin()">SIGN IN</button>
+    `;
+  }
+
+  function registerUser() {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const pass = document.getElementById("password").value;
+
+    if (name && email && pass) {
+      const userData = { name, email, pass };
+      localStorage.setItem("userData", JSON.stringify(userData));
+      alert("Account Created Successfully! Now you can login.");
+      showLogin();
+    } else {
+      alert("Please fill all fields");
+    }
+  }
+
+  function loginUser() {
+    const email = document.getElementById("loginEmail").value;
+    const pass = document.getElementById("loginPassword").value;
+
+    const saved = JSON.parse(localStorage.getItem("userData"));
+
+    if (!saved) {
+        alert("No account found. Please sign up first.");
+        return;
+    }
+
+    if (email === saved.email && pass === saved.pass) {
+        alert("Login Successful!");
+        window.location.href = "dashboard.html"; 
+    } else {
+        alert("Incorrect Email or Password");
+    }
+}
+
+</script>
+
+</body>
+</html>
